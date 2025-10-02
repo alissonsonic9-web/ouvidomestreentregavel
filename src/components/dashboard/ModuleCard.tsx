@@ -9,6 +9,7 @@ import { toggleModuleCompletion as toggleModuleCompletionClient } from '@/lib/fi
 import { useToast } from '@/hooks/use-toast';
 import { Spinner } from '../shared/Spinner';
 import { useAuth } from '@/firebase';
+import Link from 'next/link';
 
 type ModuleCardProps = {
   module: Module;
@@ -21,7 +22,8 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   const auth = useAuth();
   const user = auth.currentUser;
   
-  const onToggle = () => {
+  const onToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Evita que o clique no checkbox acione o link do card
     if (!user) {
       toast({
         title: 'Erro',
@@ -46,37 +48,42 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   };
 
   return (
-    <Card className={cn(
-        "transition-all hover:shadow-lg hover:-translate-y-1 flex flex-col aspect-[9/16] md:aspect-auto", 
-        isCompleted && "bg-card/60 border-primary/30"
-    )}>
-      <CardHeader className="flex-row items-start gap-4 space-y-0">
-        <div className="flex-shrink-0">
-          <module.Icon className="h-8 w-8 text-primary" />
-        </div>
-        <div className="flex-1">
-          <CardTitle className="text-lg">{module.title}</CardTitle>
-          <CardDescription className="hidden md:block">{module.description}</CardDescription>
-        </div>
-      </CardHeader>
-      <CardContent className="mt-auto">
-        <div className="flex items-center space-x-2 rounded-md border p-3 hover:bg-accent">
-          <Checkbox
-            id={`complete-${module.id}`}
-            checked={isCompleted}
-            onCheckedChange={onToggle}
-            disabled={isPending}
-            aria-label={`Marcar ${module.title} como concluído`}
-          />
-          <label
-            htmlFor={`complete-${module.id}`}
-            className="flex-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            {isCompleted ? 'Concluído' : 'Concluir'}
-          </label>
-          {isPending && <Spinner size="sm" />}
-        </div>
-      </CardContent>
-    </Card>
+    <Link href={`/dashboard/module/${module.id}`} className="group block">
+        <Card className={cn(
+            "transition-all group-hover:shadow-lg group-hover:-translate-y-1 flex flex-col aspect-[9/16] md:aspect-auto h-full", 
+            isCompleted && "bg-card/60 border-primary/30"
+        )}>
+        <CardHeader className="flex-row items-start gap-4 space-y-0">
+            <div className="flex-shrink-0">
+            <module.Icon className="h-8 w-8 text-primary" />
+            </div>
+            <div className="flex-1">
+            <CardTitle className="text-lg">{module.title}</CardTitle>
+            <CardDescription className="hidden md:block">{module.description}</CardDescription>
+            </div>
+        </CardHeader>
+        <CardContent className="mt-auto">
+            <div 
+              className="flex items-center space-x-2 rounded-md border p-3 hover:bg-accent"
+              onClick={(e) => e.stopPropagation()} // Impede que cliques na área do checkbox propaguem para o Link
+            >
+            <Checkbox
+                id={`complete-${module.id}`}
+                checked={isCompleted}
+                onClick={onToggle}
+                disabled={isPending}
+                aria-label={`Marcar ${module.title} como concluído`}
+            />
+            <label
+                htmlFor={`complete-${module.id}`}
+                className="flex-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+                {isCompleted ? 'Concluído' : 'Concluir'}
+            </label>
+            {isPending && <Spinner size="sm" />}
+            </div>
+        </CardContent>
+        </Card>
+    </Link>
   );
 }
