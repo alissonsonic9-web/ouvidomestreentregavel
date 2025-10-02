@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Plataforma Impacto',
+  title: 'Ouvido Mestre',
   description: 'Sua jornada para o sucesso começa aqui.',
 };
 
