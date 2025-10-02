@@ -1,10 +1,16 @@
-import { Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export function Logo({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-2 text-foreground", className)}>
-      <Rocket className="h-6 w-6 text-primary" />
+      <Image 
+        src="https://i.postimg.cc/LX4frQhn/Creative-Color-Brushstroke-Lettering-Logo-1.png" 
+        alt="Ouvido Mestre Logo"
+        width={24}
+        height={24}
+        className="h-6 w-6"
+      />
       <span className="text-xl font-bold">Ouvido Mestre</span>
     </div>
   );
