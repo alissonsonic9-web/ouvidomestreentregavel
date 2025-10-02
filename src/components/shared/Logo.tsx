@@ -5,7 +5,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-2 text-foreground", className)}>
       <Image 
-        src="https://i.postimg.cc/LX4frQhn/Creative-Color-Brushstroke-Lettering-Logo-1.png" 
+        src="https://i.postimg.cc/KvhBn5yh/Creative-Color-Brushstroke-Lettering-Logo-2.png" 
         alt="Ouvido Mestre Logo"
         width={24}
         height={24}
