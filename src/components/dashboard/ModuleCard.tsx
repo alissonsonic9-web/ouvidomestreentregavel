@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { toggleModuleCompletion as toggleModuleCompletionClient } from '@/lib/firestore'; // Renamed to avoid conflict
 import { useToast } from '@/hooks/use-toast';
 import { Spinner } from '../shared/Spinner';
-import { useAuth } from '@/firebase';
+import { useUser } from '@/firebase';
 import Link from 'next/link';
 
 type ModuleCardProps = {
@@ -19,8 +19,7 @@ type ModuleCardProps = {
 export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
-  const auth = useAuth();
-  const user = auth.currentUser;
+  const { user } = useUser();
   
   const onToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // Evita que o clique no checkbox acione o link do card
@@ -36,7 +35,7 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
     startTransition(async () => {
       try {
         await toggleModuleCompletionClient(user.uid, module.id, isCompleted);
-        // Optimistic update handled by re-rendering from parent state change
+        // A UI agora será atualizada automaticamente pelo listener onSnapshot.
       } catch (error) {
         toast({
           title: 'Erro',

@@ -1,50 +1,66 @@
 'use client';
-import type { User } from 'firebase/auth';
+import { useMemo } from 'react';
+import { doc, getFirestore } from 'firebase/firestore';
+import { useUser, useDoc } from '@/firebase';
 import { modules } from '@/lib/modules';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
-import { getModuleProgress } from '@/lib/firestore';
-import { useAuth } from '@/firebase';
-import { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Spinner } from '@/components/shared/Spinner';
 
 export default function DashboardPage() {
-  const auth = useAuth();
-  const user = auth.currentUser as User | null;
-  const [completedModules, setCompletedModules] = useState<string[]>([]);
+  const { user } = useUser();
   const isMobile = useIsMobile();
+  const db = getFirestore();
 
-  useEffect(() => {
-    async function fetchProgress() {
-      if (user) {
-        const progress = await getModuleProgress(user.uid);
-        setCompletedModules(progress);
-      }
+  // Memoize the document reference to prevent re-renders
+  const userDocRef = useMemo(() => {
+    if (user) {
+      return doc(db, 'users', user.uid);
     }
-    fetchProgress();
-  }, [user]);
+    return null;
+  }, [user, db]);
 
-  
+  // Use the real-time hook to get user data
+  const { data: userData, isLoading: isUserDocLoading } = useDoc(userDocRef);
+
+  const completedModules = useMemo(() => {
+    return userData?.completedModules || [];
+  }, [userData]);
+
+  if (isUserDocLoading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
   return (
-    <div 
+    <div
       className="flex-1 animate-in"
-      style={{ "--index": 1 } as React.CSSProperties}
+      style={{ '--index': 1 } as React.CSSProperties}
     >
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Painel de Controle</h1>
-        <p className="text-muted-foreground">Bem-vindo(a) de volta! Continue seu progresso.</p>
+        <p className="text-muted-foreground">
+          Bem-vindo(a) de volta! Continue seu progresso.
+        </p>
       </div>
       {isMobile ? (
-         <Carousel
+        <Carousel
           opts={{
-            align: "start",
+            align: 'start',
             dragFree: true,
           }}
           className="w-full"
         >
           <CarouselContent className="-ml-2">
             {modules.map((module) => (
-              <CarouselItem key={module.id} className="basis-1/2 pl-4 md:basis-1/3">
+              <CarouselItem
+                key={module.id}
+                className="basis-1/2 pl-4 md:basis-1/3"
+              >
                 <div className="p-1">
                   <ModuleCard
                     module={module}
