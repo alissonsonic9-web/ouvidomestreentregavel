@@ -40,9 +40,18 @@ export function RegisterForm() {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
       router.push('/dashboard');
     } catch (error: any) {
+      let description = 'Ocorreu um erro inesperado. Tente novamente.';
+      if (error.code === 'auth/email-already-in-use') {
+        description = 'Este endereço de e-mail já está em uso por outra conta.';
+      } else if (error.code === 'auth/invalid-email') {
+        description = 'O formato do e-mail fornecido não é válido.';
+      } else if (error.code === 'auth/weak-password') {
+        description = 'A senha é muito fraca. Por favor, use uma senha com pelo menos 6 caracteres.';
+      }
+      
       toast({
         title: 'Erro de Registro',
-        description: 'Não foi possível criar a conta. O email pode já estar em uso.',
+        description: description,
         variant: 'destructive',
       });
     } finally {
