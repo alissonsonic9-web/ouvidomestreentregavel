@@ -7,6 +7,7 @@ import { Spinner } from '@/components/shared/Spinner';
 import { Header } from '@/components/dashboard/Header';
 import { BottomNav } from '@/components/dashboard/BottomNav';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Sidebar } from '@/components/dashboard/Sidebar';
 
 export default function DashboardLayout({
   children,
@@ -33,10 +34,15 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen w-full flex-col">
-      {!isMobile && <Header />}
-      <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8 pb-24 md:pb-8">
-        {children}
-      </main>
+      <div className="flex min-h-screen w-full">
+        {!isMobile && <Sidebar />}
+        <div className="flex flex-1 flex-col">
+          <Header />
+          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8 pb-24 md:pb-8">
+            {children}
+          </main>
+        </div>
+      </div>
       {isMobile && <BottomNav />}
     </div>
   );
