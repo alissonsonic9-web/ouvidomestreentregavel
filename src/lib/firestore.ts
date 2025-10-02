@@ -1,7 +1,7 @@
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore';
-import { db } from './firebase';
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, setDoc, getFirestore } from 'firebase/firestore';
 
 export async function getModuleProgress(userId: string): Promise<string[]> {
+  const db = getFirestore();
   const userDocRef = doc(db, 'users', userId);
   const userDoc = await getDoc(userDocRef);
 
@@ -15,6 +15,7 @@ export async function getModuleProgress(userId: string): Promise<string[]> {
 }
 
 export async function toggleModuleCompletion(userId: string, moduleId: string, isCompleted: boolean) {
+  const db = getFirestore();
   const userDocRef = doc(db, 'users', userId);
   
   if (isCompleted) {

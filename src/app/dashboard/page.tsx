@@ -1,12 +1,26 @@
+'use client';
 import type { User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
 import { modules } from '@/lib/modules';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
 import { getModuleProgress } from '@/lib/firestore';
+import { useAuth } from '@/firebase';
+import { useEffect, useState } from 'react';
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
+  const auth = useAuth();
   const user = auth.currentUser as User | null;
-  const completedModules = user ? await getModuleProgress(user.uid) : [];
+  const [completedModules, setCompletedModules] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchProgress() {
+      if (user) {
+        const progress = await getModuleProgress(user.uid);
+        setCompletedModules(progress);
+      }
+    }
+    fetchProgress();
+  }, [user]);
+
   
   return (
     <div 
