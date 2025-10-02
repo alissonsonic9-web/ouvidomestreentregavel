@@ -1,0 +1,158 @@
+{
+  "entities": {
+    "UserModuleProgress": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserModuleProgress",
+      "type": "object",
+      "description": "Represents a user's progress in a specific module.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user module progress entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to the User entity. (Relationship: User 1:N UserModuleProgress)"
+        },
+        "moduleId": {
+          "type": "string",
+          "description": "Reference to the Module entity. (Relationship: Module 1:N UserModuleProgress)"
+        },
+        "isCompleted": {
+          "type": "boolean",
+          "description": "Indicates whether the module is completed by the user."
+        },
+        "lastAccessed": {
+          "type": "string",
+          "description": "Timestamp of when the user last accessed the module.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "moduleId",
+        "isCompleted"
+      ]
+    },
+    "Module": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Module",
+      "type": "object",
+      "description": "Represents a learning module within the platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Module entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the module (e.g., Introdução, Estratégias)."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the module's content."
+        },
+        "order": {
+          "type": "number",
+          "description": "The order in which the module appears in the sequence."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "order"
+      ]
+    },
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the platform. Note: Authentication details (password) are handled by Firebase and not stored here.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "registrationDate": {
+          "type": "string",
+          "description": "Date and time the user registered.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "registrationDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user profile information. Path-based ownership: Only the user can access their own document.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/moduleProgress/{moduleId}",
+        "definition": {
+          "entityName": "UserModuleProgress",
+          "schema": {
+            "$ref": "#/backend/entities/UserModuleProgress"
+          },
+          "description": "Stores the progress of a user in a specific module. Path-based ownership enforced from the parent user document.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            },
+            {
+              "name": "moduleId",
+              "description": "The unique identifier of the module."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/modules/{moduleId}",
+        "definition": {
+          "entityName": "Module",
+          "schema": {
+            "$ref": "#/backend/entities/Module"
+          },
+          "description": "Stores module information.",
+          "params": [
+            {
+              "name": "moduleId",
+              "description": "The unique identifier of the module."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This design prioritizes user-owned data with path-based ownership. User data and module progress are organized under the `/users/{userId}` collection, providing a clear and secure structure for managing user-specific information. This approach ensures authorization independence and simplifies security rules. Specifically, there is no need for complex `get()` calls to verify ownership, making transactions and batches atomic. The `UserModuleProgress` data is stored as a subcollection of each user document at `/users/{userId}/moduleProgress/{moduleId}`. This reinforces the `User 1:N UserModuleProgress` relationship and path-based ownership, ensuring that list operations are secure because only the user can access their own progress documents.\n\nThe `modules` collection stores the module definitions. This structure supports secure `list` operations (QAPs) because modules are global data accessible to all users of the platform, and this approach avoids mixing public and private data in the same collection (Structural Segregation)."
+  }
+}
