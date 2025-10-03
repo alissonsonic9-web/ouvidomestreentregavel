@@ -47,9 +47,9 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
   };
 
   return (
-    <Link href={`/dashboard/module/${module.id}`} className="group block">
+    <Link href={`/dashboard/module/${module.id}`} className="group block h-full">
         <Card className={cn(
-            "transition-all group-hover:shadow-lg group-hover:-translate-y-1 flex flex-col aspect-[9/16] md:aspect-auto h-full", 
+            "transition-all group-hover:shadow-lg group-hover:-translate-y-1 flex flex-col h-full", 
             isCompleted && "bg-card/60 border-primary/30"
         )}>
         <CardHeader className="flex-row items-start gap-4 space-y-0">
@@ -58,7 +58,7 @@ export function ModuleCard({ module, isCompleted }: ModuleCardProps) {
             </div>
             <div className="flex-1">
             <CardTitle className="text-lg">{module.title}</CardTitle>
-            <CardDescription className="hidden md:block">{module.description}</CardDescription>
+            <CardDescription className="line-clamp-2">{module.description}</CardDescription>
             </div>
         </CardHeader>
         <CardContent className="mt-auto">

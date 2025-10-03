@@ -59,9 +59,9 @@ export default function DashboardPage() {
             {modules.map((module) => (
               <CarouselItem
                 key={module.id}
-                className="basis-1/2 pl-4 md:basis-1/3"
+                className="basis-4/5 pl-4 md:basis-1/3"
               >
-                <div className="p-1">
+                <div className="h-full p-1">
                   <ModuleCard
                     module={module}
                     isCompleted={completedModules.includes(module.id)}
