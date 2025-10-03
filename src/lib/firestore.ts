@@ -30,3 +30,11 @@ export async function toggleModuleCompletion(userId: string, moduleId: string, i
     });
   }
 }
+
+export async function setLastAccessedModule(userId: string, moduleId: string) {
+  const db = getFirestore();
+  const userDocRef = doc(db, 'users', userId);
+  await setDoc(userDocRef, { 
+    lastAccessedModuleId: moduleId 
+  }, { merge: true });
+}

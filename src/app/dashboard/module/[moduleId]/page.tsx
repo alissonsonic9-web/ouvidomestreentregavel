@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { useUser } from '@/firebase';
 import { modules } from '@/lib/modules';
+import { setLastAccessedModule } from '@/lib/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -9,8 +12,15 @@ import { Button } from '@/components/ui/button';
 
 export default function ModuleDetailPage() {
   const params = useParams();
+  const { user } = useUser();
   const moduleId = params.moduleId as string;
   const module = modules.find((m) => m.id === moduleId);
+
+  useEffect(() => {
+    if (user && moduleId) {
+      setLastAccessedModule(user.uid, moduleId);
+    }
+  }, [user, moduleId]);
 
   if (!module) {
     return (
