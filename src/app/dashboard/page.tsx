@@ -5,7 +5,6 @@ import { useUser, useDoc } from '@/firebase';
 import { modules } from '@/lib/modules';
 import { ModuleCard } from '@/components/dashboard/ModuleCard';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Spinner } from '@/components/shared/Spinner';
 
 export default function DashboardPage() {
@@ -48,29 +47,15 @@ export default function DashboardPage() {
         </p>
       </div>
       {isMobile ? (
-        <Carousel
-          opts={{
-            align: 'start',
-            dragFree: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-2">
-            {modules.map((module) => (
-              <CarouselItem
-                key={module.id}
-                className="basis-4/5 pl-4 md:basis-1/3"
-              >
-                <div className="h-full p-1">
-                  <ModuleCard
-                    module={module}
-                    isCompleted={completedModules.includes(module.id)}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        <div className="grid grid-cols-1 gap-4">
+          {modules.map((module) => (
+            <ModuleCard
+              key={module.id}
+              module={module}
+              isCompleted={completedModules.includes(module.id)}
+            />
+          ))}
+        </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {modules.map((module) => (
