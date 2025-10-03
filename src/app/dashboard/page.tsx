@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
   return (
     <div
-      className="flex-1 animate-in"
+      className="flex-1 animate-in pb-20 md:pb-0"
       style={{ '--index': 1 } as React.CSSProperties}
     >
       <div className="mb-8">
