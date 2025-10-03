@@ -47,7 +47,7 @@ export default function ModuleDetailPage() {
         <CardContent>
           <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' /* 4:3 aspect ratio */ }}>
             <iframe 
-              src="https://drive.google.com/file/d/12xxI-Hxf3ohBREP00ygDoNGC6W-eqClt/preview" 
+              src={module.contentUrl}
               className="absolute top-0 left-0 w-full h-full"
               allow="autoplay"
             ></iframe>
