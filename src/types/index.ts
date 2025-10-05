@@ -6,4 +6,5 @@ export type Module = {
   description: string;
   Icon: LucideIcon;
   contentUrl: string;
+  contentType: 'pdf' | 'video';
 };

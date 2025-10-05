@@ -36,6 +36,33 @@ export default function ModuleDetailPage() {
     );
   }
 
+  const renderContent = () => {
+    if (module.contentType === 'video') {
+      return (
+        <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' /* 16:9 aspect ratio */ }}>
+          <video
+            src={module.contentUrl}
+            controls
+            className="absolute top-0 left-0 w-full h-full"
+          >
+            Seu navegador não suporta a tag de vídeo.
+          </video>
+        </div>
+      );
+    }
+
+    // Default to iframe for PDFs or other content
+    return (
+      <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' /* 4:3 aspect ratio */ }}>
+        <iframe
+          src={module.contentUrl}
+          className="absolute top-0 left-0 w-full h-full"
+          allow="autoplay"
+        ></iframe>
+      </div>
+    );
+  };
+
   return (
     <div className="flex-1 animate-in" style={{ "--index": 1 } as React.CSSProperties}>
        <div className="mb-8">
@@ -55,13 +82,7 @@ export default function ModuleDetailPage() {
             </div>
         </CardHeader>
         <CardContent>
-          <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' /* 4:3 aspect ratio */ }}>
-            <iframe 
-              src={module.contentUrl}
-              className="absolute top-0 left-0 w-full h-full"
-              allow="autoplay"
-            ></iframe>
-          </div>
+          {renderContent()}
         </CardContent>
       </Card>
     </div>
