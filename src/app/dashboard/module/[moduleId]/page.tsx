@@ -43,6 +43,7 @@ export default function ModuleDetailPage() {
           <video
             src={module.contentUrl}
             controls
+            preload="metadata"
             className="absolute top-0 left-0 w-full h-full"
           >
             Seu navegador não suporta a tag de vídeo.
