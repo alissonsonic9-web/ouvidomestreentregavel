@@ -1,5 +1,5 @@
 import type { Module } from '@/types';
-import { Ear, Music } from 'lucide-react';
+import { Ear, Music, VideoIcon } from 'lucide-react';
 
 export const modules: Module[] = [
   {
@@ -15,5 +15,12 @@ export const modules: Module[] = [
     description: 'Uma versão simplificada para facilitar a interpretação.',
     Icon: Music,
     contentUrl: 'https://drive.google.com/file/d/1TRQjntll_2NtAOQXVoaV-A2vNYD4GkBt/preview',
+  },
+  {
+    id: 'video-aulas',
+    title: 'Videoaulas',
+    description: 'Aulas em vídeo para aprofundar seu conhecimento.',
+    Icon: VideoIcon,
+    contentUrl: 'https://drive.google.com/file/d/1_dummy_video_id/preview', // Placeholder URL
   },
 ];
