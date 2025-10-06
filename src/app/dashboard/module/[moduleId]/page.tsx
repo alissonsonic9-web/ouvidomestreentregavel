@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 export default function ModuleDetailPage() {
   const params = useParams();
@@ -36,30 +37,35 @@ export default function ModuleDetailPage() {
     );
   }
 
-  const renderContent = () => {
-    if (module.contentType === 'video') {
+  const renderContent = (contentItem: any, index: number) => {
+    if (contentItem.type === 'video') {
       return (
-        <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' /* 16:9 aspect ratio */ }}>
-          <video
-            src={module.contentUrl}
-            controls
-            preload="metadata"
-            className="absolute top-0 left-0 w-full h-full"
-          >
-            Seu navegador não suporta a tag de vídeo.
-          </video>
+        <div key={index} className="mb-8">
+          <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
+          <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' }}>
+            <video
+              src={contentItem.url}
+              controls
+              preload="metadata"
+              className="absolute top-0 left-0 w-full h-full"
+            >
+              Seu navegador não suporta a tag de vídeo.
+            </video>
+          </div>
         </div>
       );
     }
 
-    // Default to iframe for PDFs or other content
     return (
-      <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' /* 4:3 aspect ratio */ }}>
-        <iframe
-          src={module.contentUrl}
-          className="absolute top-0 left-0 w-full h-full"
-          allow="autoplay"
-        ></iframe>
+      <div key={index} className="mb-8">
+        <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
+        <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' }}>
+          <iframe
+            src={contentItem.url}
+            className="absolute top-0 left-0 w-full h-full"
+            allow="autoplay"
+          ></iframe>
+        </div>
       </div>
     );
   };
@@ -83,7 +89,12 @@ export default function ModuleDetailPage() {
             </div>
         </CardHeader>
         <CardContent>
-          {renderContent()}
+          {module.content.map((item, index) => (
+            <>
+              {renderContent(item, index)}
+              {index < module.content.length - 1 && <Separator className="my-8" />}
+            </>
+          ))}
         </CardContent>
       </Card>
     </div>

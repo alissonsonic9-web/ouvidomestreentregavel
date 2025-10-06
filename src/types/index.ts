@@ -1,10 +1,15 @@
 import type { LucideIcon } from 'lucide-react';
 
+export type ModuleContent = {
+  title: string;
+  url: string;
+  type: 'pdf' | 'video';
+};
+
 export type Module = {
   id: string;
   title: string;
   description: string;
   Icon: LucideIcon;
-  contentUrl: string;
-  contentType: 'pdf' | 'video';
+  content: ModuleContent[];
 };
