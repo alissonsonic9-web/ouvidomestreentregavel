@@ -10,6 +10,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import type { ModuleContent } from '@/types';
 
 export default function ModuleDetailPage() {
   const params = useParams();
@@ -37,37 +38,42 @@ export default function ModuleDetailPage() {
     );
   }
 
-  const renderContent = (contentItem: any, index: number) => {
-    if (contentItem.type === 'video') {
-      return (
-        <div key={index} className="mb-8">
-          <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
-          <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' }}>
-            <video
-              src={contentItem.url}
-              controls
-              preload="metadata"
-              className="absolute top-0 left-0 w-full h-full"
-            >
-              Seu navegador não suporta a tag de vídeo.
-            </video>
+  const renderContent = (contentItem: ModuleContent, index: number) => {
+    switch (contentItem.type) {
+      case 'video':
+        return (
+          <div key={index} className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
+            <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' }}>
+              <video
+                src={contentItem.url}
+                controls
+                preload="metadata"
+                className="absolute top-0 left-0 w-full h-full"
+              >
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </div>
           </div>
-        </div>
-      );
+        );
+      case 'pdf':
+      case 'youtube':
+        return (
+          <div key={index} className="mb-8">
+            <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
+            <div className="relative overflow-hidden w-full" style={{ paddingTop: '56.25%' }}>
+              <iframe
+                src={contentItem.url}
+                className="absolute top-0 left-0 w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        );
+      default:
+        return null;
     }
-
-    return (
-      <div key={index} className="mb-8">
-        <h3 className="text-xl font-semibold mb-4">{contentItem.title}</h3>
-        <div className="relative overflow-hidden w-full" style={{ paddingTop: '75%' }}>
-          <iframe
-            src={contentItem.url}
-            className="absolute top-0 left-0 w-full h-full"
-            allow="autoplay"
-          ></iframe>
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -90,10 +96,10 @@ export default function ModuleDetailPage() {
         </CardHeader>
         <CardContent>
           {module.content.map((item, index) => (
-            <>
+            <React.Fragment key={index}>
               {renderContent(item, index)}
               {index < module.content.length - 1 && <Separator className="my-8" />}
-            </>
+            </React.Fragment>
           ))}
         </CardContent>
       </Card>

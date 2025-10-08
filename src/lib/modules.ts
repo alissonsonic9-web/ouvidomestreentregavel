@@ -35,14 +35,9 @@ export const modules: Module[] = [
     Icon: VideoIcon,
     content: [
       {
-        title: 'Como Tocar de Ouvido - Aula 01',
-        url: 'https://www.dropbox.com/scl/fi/pdne8ygivt41eyy9rle0i/COMO-TOCAR-DE-OUVIDO-01.mp4?rlkey=2f06md03mhqhbhaz13n7lg0rf&raw=1',
-        type: 'video',
-      },
-      {
-        title: 'Como Tocar de Ouvido - Aula 02',
-        url: 'https://www.dropbox.com/scl/fi/h6a3gmxooyrt7wv1t54o5/COMO-TOCAR-DE-OUVIDO-02.mp4?rlkey=z96gqbgx1novzcrr3tbr8y2sh&raw=1',
-        type: 'video',
+        title: 'Videoaula de Harmonia',
+        url: 'https://www.youtube.com/embed/ci5cwADmqiY',
+        type: 'youtube',
       },
     ],
   },

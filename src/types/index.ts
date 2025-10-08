@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react';
 export type ModuleContent = {
   title: string;
   url: string;
-  type: 'pdf' | 'video';
+  type: 'pdf' | 'video' | 'youtube';
 };
 
 export type Module = {
