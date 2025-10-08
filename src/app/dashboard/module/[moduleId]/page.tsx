@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useUser } from '@/firebase';
 import { modules } from '@/lib/modules';
