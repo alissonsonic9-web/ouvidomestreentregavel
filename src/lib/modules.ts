@@ -36,7 +36,7 @@ export const modules: Module[] = [
     content: [
       {
         title: 'Videoaula de Harmonia',
-        url: 'https://www.youtube.com/embed/ci5cwADmqiY',
+        url: 'https://www.youtube.com/embed/txUHZLt4ePo',
         type: 'youtube',
       },
     ],
