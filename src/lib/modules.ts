@@ -49,6 +49,11 @@ export const modules: Module[] = [
         url: 'https://www.youtube.com/embed/FQ29ex7Z0Dw',
         type: 'youtube',
       },
+      {
+        title: 'Videoaula 4',
+        url: 'https://www.youtube.com/embed/m_htH3rC4Yk',
+        type: 'youtube',
+      },
     ],
   },
 ];
